@@ -29,6 +29,11 @@ class ViewController: UITableViewController {
 
     }
 
+    func startGame(){
+        title = allWords.randomElement() //title do viewcontroller vai ser a palavra
+        usedWords.removeAll(keepingCapacity: true)
+        tableView.reloadData()
+    }
 
 }
 
