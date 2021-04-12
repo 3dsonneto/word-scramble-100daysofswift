@@ -70,7 +70,7 @@ class ViewController: UITableViewController {
         if isPossible(word: lowerAnswer){ // verifica se é possível baseado na palavra
             if isOriginal(word: lowerAnswer){ // verifica se é original, não foi usada antes
                 if isReal(word: lowerAnswer){ // verifica se é uma palavra existente, válida
-                    usedWords.insert(answer, at: 0) //insere no array de palavras usadas na posição 0
+                    usedWords.insert(lowerAnswer, at: 0) //insere no array de palavras usadas na posição 0
                     
                     let indexPath = IndexPath(row: 0, section: 0)
                     tableView.insertRows(at: [indexPath], with: .automatic) //adiciona uma linha na row 0, section 0(no topo)
