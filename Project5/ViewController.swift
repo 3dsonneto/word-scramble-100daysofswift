@@ -66,28 +66,40 @@ class ViewController: UITableViewController {
     func submit(_ answer: String){
         let lowerAnswer = answer.lowercased() //deixa a palavra em minusculo
         
-        if isPossible(word: lowerAnswer){
-            if isOriginal(word: lowerAnswer){
-                if isReal(word: lowerAnswer){
-                    usedWords.insert(answer, at: 0)
+        if isPossible(word: lowerAnswer){ // verifica se é possível baseado na palavra
+            if isOriginal(word: lowerAnswer){ // verifica se é original, não foi usada antes
+                if isReal(word: lowerAnswer){ // verifica se é uma palavra existente, válida
+                    usedWords.insert(answer, at: 0) //insere no array de palavras usadas na posição 0
                     
                     let indexPath = IndexPath(row: 0, section: 0)
-                    tableView.insertRows(at: [indexPath], with: .automatic)
+                    tableView.insertRows(at: [indexPath], with: .automatic) //adiciona uma linha na row 0, section 0(no topo)
                 }
             }
         }
     }
     
     func isPossible(word: String) -> Bool {
-        return true
+        guard var tempWord = title?.lowercased() else { return false }
+        
+        for letter in word{ //loopa cada letra na palavra
+            if let position = tempWord.firstIndex(of: letter){ //verifica se a letra faz parte da tempword(palavra no titulo)
+                tempWord.remove(at: position) //se achar remove a letra da tempword e ela diminui(para não usarmos a mesma letra duas vezes)
+            } else {
+                return false //se não achar a letra retorna false
+            }
+        }
+        return true //se achar todas a palavra é valida e retorna true
     }
     
     func isOriginal(word: String) -> Bool {
-        return true
+        return !usedWords.contains(word)
     }
     
     func isReal(word: String) -> Bool {
-        return true
+        let checker = UITextChecker() //não se da muito bem com Swift Strings, prefere objc strings(por isso o utf16.count)
+        let range = NSRange(location: 0, length: word.utf16.count) //diz qual o alcance do scan, nesse caso do 0(inicio) até o fim da palavra
+        let misspelledRange = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en")// qual palavra escanear, quanto da palavra vai ser escaneado
+        return misspelledRange.location == NSNotFound// retorna o nsrange de onde o erro foi encontrado(se foi nsnotfound significa que não achou erro) nesse caso é true
     }
 }
 
